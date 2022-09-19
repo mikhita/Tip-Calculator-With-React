@@ -14,4 +14,8 @@ root.render(
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+// blog-preview
 
+// {title:"my new website" , body:"lorem ipsum...", author:"mikhita", id:1},
+//         {title:"something1" , body:"lorem ipsum...", author:"oto", id:2},
+//         {title:"somethiing2" , body:"lorem ipsum...", author:"nika", id:3}
