@@ -2,26 +2,28 @@ import { useState, useEffect } from "react";
 import BlogList from "./BlogList";
 
 const Home = () => {
-    const [blogs, setBlogs]= useState([
-        {title:"my new website" , body:"lorem ipsum...", author:"mikhita", id:1},
-        {title:"something1" , body:"lorem ipsum...", author:"oto", id:2},
-        {title:"somethiing2" , body:"lorem ipsum...", author:"nika", id:3}
-    ])
-
-    function handleDelete(id){
-        const newBlogs = blogs.filter(blog=> blog.id !== id);
-        setBlogs(newBlogs);
-    }
+    const [blogs, setBlogs]= useState(null)
+    const [isLoadind,setIsLoading] = useState(true)
     
-    const [name, setName]= useState("mikhita")
+
+    
     useEffect(()=>{
-        console.log(name)
-    }, [name])
+        fetch("http://localhost:3000/blogs")
+        .then(res=>{
+            if(!res.ok){
+                throw Error("couldnot connect to this resource")
+            }
+            return res.json()
+        })
+        .then(data=>{setBlogs(data);
+                    setIsLoading(false);})
+        .catch(err=>
+        {console.log(err.message)})            
+    }, [])
     return (
-        <div>
-      <BlogList  blogs={blogs} title="All blogs" handleDelete={handleDelete}/>
-        <button onClick={()=>setName("nika")}>change name</button>
-        <p>{name}</p>
+        <div className="home">
+            {isLoadind && <div>Loading...</div> }
+      {blogs && <BlogList  blogs={blogs} title="All blogs" />}
       </div>
     );
   }
