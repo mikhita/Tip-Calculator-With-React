@@ -6,7 +6,8 @@ const useFetch = (url)=> {
     const [error,setError] = useState(null);
 
     useEffect(()=>{
-    fetch(url)
+        const abortCont = new AbortController();
+    fetch(url, {signal:abortCont.signal})
     .then(res=>{
         if(!res.ok){
             throw Error("couldnot connect to resources")
@@ -16,10 +17,14 @@ const useFetch = (url)=> {
     .then(data=>{setData(data);
                 setIsLoading(false);})
     .catch(err=>{
-        setIsLoading(false);
-        setError(err.message);
-
-    })            
+        if(err.name==="AbortError"){
+            console.log("abort error")
+        }else{
+            setIsLoading(false);
+            setError(err.message);
+        }
+    })  
+    return abortCont.abort();          
 }, [url]);
 return{
     data,isLoadind,error
